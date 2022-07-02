@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\TimelineRequest;
 
 class TimelineController extends Controller
 {
@@ -15,24 +16,8 @@ class TimelineController extends Controller
           'name' => '田中太郎',
         ]);
     }
-    public function postTweet(Request $request, Response $response)
+    public function postTweet(TimelineRequest $request, Response $response)
     {
-        $rules = [
-            'tweet' => ['string', 'required', 'max:140'],
-            'image_url' => ['nullable', 'string', 'max:200'],
-        ];
-        $message = [
-            'tweet.required' => 'ツイートは必ず入力してください。',
-            'tweet.max:140' => 'ツイートは140文字以内で入力してください。',
-            'image_url.max:200' => '画像URLは200文字以内としてください。',
-        ];
-        $validator = Validator::make($request->all(), $rules, $message);
-        
-        if($validator->fails()){
-            return redirect('/timeline')
-            ->withErrors($validator)
-            ->withInput();
-        }
-       return back();
+        return view('timeline');
     }
 }
