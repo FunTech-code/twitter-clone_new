@@ -30,7 +30,7 @@ class EditUserRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:50'],
             'email' => ['required', 'string', 'email', 'max:50'],
-            'tel_number' => ['required', 'string', 'regex:/^[0-9-]{10,13}$/', 'min:10', 'max:13'],
+            'tel_number' => ['nullable', 'string', 'regex:/^[0-9-]{10,13}$/', 'min:10', 'max:13'],
             'image_url' => ['nullable', 'string', 'max:200'],
             'profile' => ['nullable', 'string', 'max:200'],
         ];
@@ -44,7 +44,6 @@ class EditUserRequest extends FormRequest
             'email.required'    => 'メールアドレスは必ず入力してください。',
             'email.email'       => '有効なメールアドレスを入力してください。',
             'email.max:50'      => 'メールアドレスは50文字以内で入力してください。',
-            'tel_number.required' => '電話番号は必ず入力してください。',
             'tel_number.regex:/^[0-9-]{10,13}$/' => '電話番号は数字もしくは-で記入してください。',
             'tel_number.min:10' => '電話番号は10文字以上13文字以内で入力してください。',
             'tel_number.max:13' => '電話番号は10文字以上13文字以内で入力してください。',

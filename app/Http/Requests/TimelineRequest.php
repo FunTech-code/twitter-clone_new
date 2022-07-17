@@ -38,7 +38,7 @@ class TimelineRequest extends FormRequest
         return [
             'tweet.string'    => 'ツイートは文字列で入力してください。',
             'tweet.required'    => 'ツイートは必ず入力してください。',
-            'tweet.max:140'     => 'ツイートは140文字以内で入力してください。',
+            'tweet.max'     => 'ツイートは140文字以内で入力してください。',
             'image_url.max:200' => '画像URLは200文字以内としてください。',
         ];
     }
