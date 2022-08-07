@@ -4,20 +4,33 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\Http\Requests\TimelineRequest;
+use Carbon\Carbon;
 
 class TimelineController extends Controller
 {
     public function showTimelinePage(Request $request, Response $response)
     {
+        $tweets = DB::table('tweets')->latest()->paginate(5);
         return view('timeline', [
-          'image_url' => 'https://thumb.ac-illust.com/77/77d8905d1a9192f70ecacde86aae5de6_t.jpeg',
-          'name' => '田中太郎',
+            'user' => Auth::user(),
+            'tweets' => $tweets,
         ]);
     }
     public function postTweet(TimelineRequest $request, Response $response)
     {
-        return view('timeline');
+        $param = [
+            'user_id'   => Auth::user()->id,
+            'tweet'     => $request->tweet,
+            'image_url' => $request->image_url,
+            'created_user' => Auth::user()->name,
+            'update_user' => Auth::user()->name,
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now()
+        ];
+        DB::table('tweets')->insert($param); 
+        return back();
     }
 }
