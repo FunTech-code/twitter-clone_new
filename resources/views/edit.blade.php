@@ -11,7 +11,7 @@
           @endforeach
         @endif
         <div class="card-body">
-          {!! Form::open(['route' => 'editcomplete', 'method' => 'POST']) !!}
+          {!! Form::open(['route' => 'editcomplete', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
           {{ Form::label('name','氏名')}}
           {{ Form::text('name', $user->name, ['id'=>'name','class' => 'form-control mr-auto']) }}
           {{ Form::label('email','Eメール')}}
@@ -21,7 +21,8 @@
           {{ Form::label('image_url','アイコン画像')}}
           </br>
           @if (isset($user->image_url))
-            <img src={{ $user->image_url }} width=30% height=auto><br>
+            <img src={{ asset('storage/'.$user->image_url)}} width=30% height=auto><br>
+            {{Form::hidden('image_url_before', $user->image_url)}}
           @else
             <img src="https://thumb.ac-illust.com/e2/e2cb85acf732de018702298367234d84_t.jpeg" width=30% height=auto><br>
           @endif

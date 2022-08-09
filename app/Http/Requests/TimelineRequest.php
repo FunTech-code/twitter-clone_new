@@ -29,7 +29,7 @@ class TimelineRequest extends FormRequest
     {
         return [
             'tweet' => ['string', 'required', 'max:140'],
-            'image_url' => ['nullable', 'string', 'max:200'],
+            'image_url' => ['nullable', 'mimes:jpg,jpeg,png,gif', 'max:200'],
         ];
     }
 
