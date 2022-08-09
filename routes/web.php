@@ -19,5 +19,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/timeline', 'TimelineController@showTimelinePage')->name('timeline');
 Route::post('/timeline', 'TimelineController@postTweet')->name('timeline');
 
+Route::get('/user', 'UserController@showUserPage')->name('user');
 Route::get('/edituser', 'EditUserController@showEditUserPage')->name('edit');
 Route::post('/editcomplete', 'EditUserController@editComplete')->name('editcomplete');
