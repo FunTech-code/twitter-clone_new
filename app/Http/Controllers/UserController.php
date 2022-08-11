@@ -12,7 +12,7 @@ class UserController extends Controller
 {
     public function showUserPage()
     {
-        $tweets = Tweet::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+        $tweets = User::find(Auth::user()->id)->tweets()->orderBy('created_at', 'desc')->get();
         $user = User::where('id', Auth::user()->id)->first();
 
         return view('user', [

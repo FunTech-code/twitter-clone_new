@@ -38,7 +38,7 @@ class EditUserController extends Controller
         $user->update_user = Auth::user()->name;
         $user->save();
         
-        $tweets = Tweet::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+        $tweets = User::find(Auth::user()->id)->tweets()->orderBy('created_at', 'desc')->get();
         $user = User::where('id', Auth::user()->id)->first();
 
         return view('user', [
