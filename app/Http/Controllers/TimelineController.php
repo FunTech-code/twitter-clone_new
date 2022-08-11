@@ -14,7 +14,7 @@ class TimelineController extends Controller
 {
     public function showTimelinePage(Request $request, Response $response)
     {
-        $tweets = Tweet::all();
+        $tweets = Tweet::orderBy('created_at', 'desc')->get();
         return view('timeline', [
             'user' => Auth::user(),
             'tweets' => $tweets,
@@ -27,16 +27,16 @@ class TimelineController extends Controller
             $filename = $request->image_url->getClientOriginalName();
             $image_url = $request->image_url->storeAs('',$filename,'public');
         }
-        $param = [
-            'user_id'   => Auth::user()->id,
-            'tweet'     => $request->tweet,
-            'image_url' => $image_url,
-            'created_user' => Auth::user()->name,
-            'update_user' => Auth::user()->name,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now()
-        ];
-        DB::table('tweets')->insert($param); 
+        $tweet = new Tweet;
+        $input = $request->all();
+        
+        $tweet->fill($input);
+        $tweet->user_id = Auth::user()->id;
+        $tweet->image_url = $image_url;
+        $tweet->created_user = Auth::user()->name;
+        $tweet->update_user = Auth::user()->name;
+
+        $tweet->save();
         return back();
     }
 }

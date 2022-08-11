@@ -7,14 +7,15 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\EditUserRequest;
+use App\Tweet;
+use App\User;
 use Carbon\Carbon;
 
 class EditUserController extends Controller
 {
     public function showEditUserPage()
     {
-        $user = DB::table('users')->where('id', Auth::user()->id)->first();
-
+        $user = User::where('id', Auth::user()->id)->first();
         return view('edit', [
             'user' => $user,
         ]);
@@ -29,21 +30,18 @@ class EditUserController extends Controller
         }else if(!empty($request['image_url_before'])){
             $image_url = $request['image_url_before'];
         }
-        $param = [
-            'name' => $request['name'],
-            'email' => $request['email'],
-            'tel_number' => $request['tel_number'],
-            'profile' => $request['profile'],
-            'image_url' => $image_url,
-            'update_user' => $request['name'],
-            'updated_at' => Carbon::now()
-        ];
 
-        DB::table('users')->where('id', Auth::user()->id)->update($param);
-        $tweets = DB::table('tweets')->where('user_id', Auth::user()->id)->get();
-        $user = DB::table('users')->where('id', Auth::user()->id)->first();
+        $user = User::find(Auth::user()->id);
+        $input = $request->all();
+        $user->fill($input);
+        $user->image_url = $image_url;
+        $user->update_user = Auth::user()->name;
+        $user->save();
+        
+        $tweets = Tweet::where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->get();
+        $user = User::where('id', Auth::user()->id)->first();
 
-        return view('edit', [
+        return view('user', [
             'user' => $user,
             'tweets' => $tweets
         ]);
