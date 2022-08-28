@@ -15,6 +15,9 @@ class TimelineController extends Controller
     public function showTimelinePage(Request $request, Response $response)
     {
         $tweets = Tweet::orderBy('created_at', 'desc')->get();
+        if(!empty(Auth::user()->id)){
+            $request->session()->put('user_id',Auth::user()->id);
+        }
         return view('timeline', [
             'user' => Auth::user(),
             'tweets' => $tweets,
@@ -27,11 +30,12 @@ class TimelineController extends Controller
             $filename = $request->image_url->getClientOriginalName();
             $image_url = $request->image_url->storeAs('',$filename,'public');
         }
+        
         $tweet = new Tweet;
         $input = $request->all();
         
         $tweet->fill($input);
-        $tweet->user_id = Auth::user()->id;
+        $tweet->user_id = $request->session()->get('user_id');
         $tweet->image_url = $image_url;
         $tweet->created_user = Auth::user()->name;
         $tweet->update_user = Auth::user()->name;

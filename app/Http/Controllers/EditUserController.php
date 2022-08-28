@@ -13,9 +13,9 @@ use Carbon\Carbon;
 
 class EditUserController extends Controller
 {
-    public function showEditUserPage()
+    public function showEditUserPage(Request $request)
     {
-        $user = User::where('id', Auth::user()->id)->first();
+        $user = User::where('id', $request->session()->get('user_id'))->first();
         return view('edit', [
             'user' => $user,
         ]);
@@ -30,16 +30,17 @@ class EditUserController extends Controller
         }else if(!empty($request['image_url_before'])){
             $image_url = $request['image_url_before'];
         }
-
-        $user = User::find(Auth::user()->id);
+        
+        $user_id = $request->session()->get('user_id');
+        $user = User::find($user_id);
         $input = $request->all();
         $user->fill($input);
         $user->image_url = $image_url;
         $user->update_user = Auth::user()->name;
         $user->save();
         
-        $tweets = User::find(Auth::user()->id)->tweets->sortByDesc('created_at');
-        $user = User::where('id', Auth::user()->id)->first();
+        $tweets = User::find($user_id)->tweets->sortByDesc('created_at');
+        $user = User::where('id', $user_id)->first();
 
         return view('user', [
             'user' => $user,
