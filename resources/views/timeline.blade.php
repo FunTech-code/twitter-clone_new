@@ -6,6 +6,9 @@
     <p class="alert alert-danger">{{ $error }}</p>
       @endforeach
     @endif
+    <div>
+      <a href="/timeline?sort=user_id">ユーザID順</a>
+    </div>
     {!! Form::open(['route' => 'timeline', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
       <div class="row mb-4">
         @guest
@@ -39,6 +42,7 @@
             <tr>
         @endforeach
           </table>
+          {{ $tweets->appends([ 'sort' => $sort])->links() }}
         </div>
       </div>
     {!! Form::close() !!}

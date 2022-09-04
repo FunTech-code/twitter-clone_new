@@ -14,13 +14,18 @@ class TimelineController extends Controller
 {
     public function showTimelinePage(Request $request, Response $response)
     {
-        $tweets = Tweet::orderBy('created_at', 'desc')->get();
+        if($request->has('sort')){
+            $tweets = Tweet::orderBy($request->sort, 'asc')->simplePaginate(10);
+        }else{
+            $tweets = Tweet::orderBy('created_at', 'desc')->simplePaginate(10);
+        }
         if(!empty(Auth::user()->id)){
             $request->session()->put('user_id',Auth::user()->id);
         }
         return view('timeline', [
             'user' => Auth::user(),
             'tweets' => $tweets,
+            'sort' => $request->sort,
         ]);
     }
     public function postTweet(TimelineRequest $request, Response $response)
