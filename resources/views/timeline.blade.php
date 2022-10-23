@@ -7,7 +7,7 @@
       @endforeach
     @endif
     <div>
-      <a href="/timeline?sort=user_id">ユーザID順</a>
+      <a href="/timeline?order=asc">昇順</a>
     </div>
     {!! Form::open(['route' => 'timeline', 'method' => 'POST', 'enctype' => 'multipart/form-data']) !!}
       <div class="row mb-4">
@@ -42,7 +42,7 @@
             <tr>
         @endforeach
           </table>
-          {{ $tweets->appends([ 'sort' => $sort])->links() }}
+          {{ $tweets->appends([ 'order' => $order])->links() }}
         </div>
       </div>
     {!! Form::close() !!}

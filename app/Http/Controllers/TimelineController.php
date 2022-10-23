@@ -14,8 +14,8 @@ class TimelineController extends Controller
 {
     public function showTimelinePage(Request $request, Response $response)
     {
-        if($request->has('sort')){
-            $tweets = Tweet::orderBy($request->sort, 'asc')->simplePaginate(10);
+        if($request->has('order')){
+            $tweets = Tweet::orderBy('created_at', $request->order)->simplePaginate(10);
         }else{
             $tweets = Tweet::orderBy('created_at', 'desc')->simplePaginate(10);
         }
@@ -25,7 +25,7 @@ class TimelineController extends Controller
         return view('timeline', [
             'user' => Auth::user(),
             'tweets' => $tweets,
-            'sort' => $request->sort,
+            'order' => $request->order,
         ]);
     }
     public function postTweet(TimelineRequest $request, Response $response)
